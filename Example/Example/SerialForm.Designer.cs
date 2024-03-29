@@ -28,26 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            comboBox1 = new ComboBox();
+            comboBoxPort = new ComboBox();
             label1 = new Label();
             label2 = new Label();
-            comboBox2 = new ComboBox();
-            button1 = new Button();
-            button2 = new Button();
-            textBox1 = new TextBox();
+            comboBoxBaud = new ComboBox();
+            buttonOpen = new Button();
+            buttonClose = new Button();
+            textBoxReceive = new TextBox();
             label3 = new Label();
             label4 = new Label();
-            textBox2 = new TextBox();
-            label5 = new Label();
+            textBoxResponse = new TextBox();
+            labelStatus = new Label();
+            labelReceive = new Label();
+            labelResponse = new Label();
             SuspendLayout();
             // 
-            // comboBox1
+            // comboBoxPort
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(12, 27);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(121, 23);
-            comboBox1.TabIndex = 1;
+            comboBoxPort.FormattingEnabled = true;
+            comboBoxPort.Location = new Point(12, 27);
+            comboBoxPort.Name = "comboBoxPort";
+            comboBoxPort.Size = new Size(121, 23);
+            comboBoxPort.TabIndex = 1;
+            comboBoxPort.DropDown += comboBoxPort_DropDown;
             // 
             // label1
             // 
@@ -67,39 +70,41 @@
             label2.TabIndex = 2;
             label2.Text = "Baud";
             // 
-            // comboBox2
+            // comboBoxBaud
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(139, 27);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(88, 23);
-            comboBox2.TabIndex = 3;
+            comboBoxBaud.FormattingEnabled = true;
+            comboBoxBaud.Location = new Point(139, 27);
+            comboBoxBaud.Name = "comboBoxBaud";
+            comboBoxBaud.Size = new Size(88, 23);
+            comboBoxBaud.TabIndex = 3;
             // 
-            // button1
+            // buttonOpen
             // 
-            button1.Location = new Point(233, 26);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 4;
-            button1.Text = "Open";
-            button1.UseVisualStyleBackColor = true;
+            buttonOpen.Location = new Point(233, 26);
+            buttonOpen.Name = "buttonOpen";
+            buttonOpen.Size = new Size(75, 23);
+            buttonOpen.TabIndex = 4;
+            buttonOpen.Text = "Open";
+            buttonOpen.UseVisualStyleBackColor = true;
+            buttonOpen.Click += buttonOpen_Click;
             // 
-            // button2
+            // buttonClose
             // 
-            button2.Location = new Point(314, 26);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 5;
-            button2.Text = "Close";
-            button2.UseVisualStyleBackColor = true;
+            buttonClose.Location = new Point(314, 26);
+            buttonClose.Name = "buttonClose";
+            buttonClose.Size = new Size(75, 23);
+            buttonClose.TabIndex = 5;
+            buttonClose.Text = "Close";
+            buttonClose.UseVisualStyleBackColor = true;
+            buttonClose.Click += buttonClose_Click;
             // 
-            // textBox1
+            // textBoxReceive
             // 
-            textBox1.Location = new Point(12, 71);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(215, 106);
-            textBox1.TabIndex = 6;
+            textBoxReceive.Location = new Point(12, 71);
+            textBoxReceive.Multiline = true;
+            textBoxReceive.Name = "textBoxReceive";
+            textBoxReceive.Size = new Size(215, 106);
+            textBoxReceive.TabIndex = 6;
             // 
             // label3
             // 
@@ -119,40 +124,63 @@
             label4.TabIndex = 9;
             label4.Text = "Receive";
             // 
-            // textBox2
+            // textBoxResponse
             // 
-            textBox2.Location = new Point(12, 198);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(215, 106);
-            textBox2.TabIndex = 8;
+            textBoxResponse.Location = new Point(12, 198);
+            textBoxResponse.Multiline = true;
+            textBoxResponse.Name = "textBoxResponse";
+            textBoxResponse.ReadOnly = true;
+            textBoxResponse.Size = new Size(215, 106);
+            textBoxResponse.TabIndex = 8;
             // 
-            // label5
+            // labelStatus
             // 
-            label5.AutoSize = true;
-            label5.Location = new Point(12, 330);
-            label5.Name = "label5";
-            label5.Size = new Size(41, 15);
-            label5.TabIndex = 10;
-            label5.Text = "Status";
+            labelStatus.AutoSize = true;
+            labelStatus.Location = new Point(12, 330);
+            labelStatus.Name = "labelStatus";
+            labelStatus.Size = new Size(41, 15);
+            labelStatus.TabIndex = 10;
+            labelStatus.Text = "Status";
             // 
-            // Form1
+            // labelReceive
+            // 
+            labelReceive.AutoSize = true;
+            labelReceive.Location = new Point(233, 198);
+            labelReceive.Name = "labelReceive";
+            labelReceive.Size = new Size(67, 15);
+            labelReceive.TabIndex = 11;
+            labelReceive.Text = "　　　　　";
+            labelReceive.Click += labelReceive_Click;
+            // 
+            // labelResponse
+            // 
+            labelResponse.AutoSize = true;
+            labelResponse.Location = new Point(233, 71);
+            labelResponse.Name = "labelResponse";
+            labelResponse.Size = new Size(67, 15);
+            labelResponse.TabIndex = 12;
+            labelResponse.Text = "　　　　　";
+            labelResponse.Click += labelResponse_Click;
+            // 
+            // SerialForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(409, 386);
-            Controls.Add(label5);
+            Controls.Add(labelResponse);
+            Controls.Add(labelReceive);
+            Controls.Add(labelStatus);
             Controls.Add(label4);
-            Controls.Add(textBox2);
+            Controls.Add(textBoxResponse);
             Controls.Add(label3);
-            Controls.Add(textBox1);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(textBoxReceive);
+            Controls.Add(buttonClose);
+            Controls.Add(buttonOpen);
             Controls.Add(label2);
-            Controls.Add(comboBox2);
+            Controls.Add(comboBoxBaud);
             Controls.Add(label1);
-            Controls.Add(comboBox1);
-            Name = "Form1";
+            Controls.Add(comboBoxPort);
+            Name = "SerialForm";
             Text = "ModbusRTU Serial";
             ResumeLayout(false);
             PerformLayout();
@@ -160,16 +188,18 @@
 
         #endregion
 
-        private ComboBox comboBox1;
+        private ComboBox comboBoxPort;
         private Label label1;
         private Label label2;
-        private ComboBox comboBox2;
-        private Button button1;
-        private Button button2;
-        private TextBox textBox1;
+        private ComboBox comboBoxBaud;
+        private Button buttonOpen;
+        private Button buttonClose;
+        private TextBox textBoxReceive;
         private Label label3;
         private Label label4;
-        private TextBox textBox2;
-        private Label label5;
+        private TextBox textBoxResponse;
+        private Label labelStatus;
+        private Label labelReceive;
+        private Label labelResponse;
     }
 }
