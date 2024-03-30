@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            comboBoxPort = new ComboBox();
+            comboBoxSerialPortName = new ComboBox();
             label1 = new Label();
             label2 = new Label();
-            comboBoxBaud = new ComboBox();
+            comboBoxBaudrate = new ComboBox();
             buttonOpen = new Button();
             buttonClose = new Button();
             textBoxReceive = new TextBox();
@@ -43,14 +43,14 @@
             labelResponse = new Label();
             SuspendLayout();
             // 
-            // comboBoxPort
+            // comboBoxSerialPortName
             // 
-            comboBoxPort.FormattingEnabled = true;
-            comboBoxPort.Location = new Point(12, 27);
-            comboBoxPort.Name = "comboBoxPort";
-            comboBoxPort.Size = new Size(121, 23);
-            comboBoxPort.TabIndex = 1;
-            comboBoxPort.DropDown += comboBoxPort_DropDown;
+            comboBoxSerialPortName.FormattingEnabled = true;
+            comboBoxSerialPortName.Location = new Point(12, 27);
+            comboBoxSerialPortName.Name = "comboBoxSerialPortName";
+            comboBoxSerialPortName.Size = new Size(121, 23);
+            comboBoxSerialPortName.TabIndex = 1;
+            comboBoxSerialPortName.DropDown += comboBoxPort_DropDown;
             // 
             // label1
             // 
@@ -70,13 +70,13 @@
             label2.TabIndex = 2;
             label2.Text = "Baud";
             // 
-            // comboBoxBaud
+            // comboBoxBaudrate
             // 
-            comboBoxBaud.FormattingEnabled = true;
-            comboBoxBaud.Location = new Point(139, 27);
-            comboBoxBaud.Name = "comboBoxBaud";
-            comboBoxBaud.Size = new Size(88, 23);
-            comboBoxBaud.TabIndex = 3;
+            comboBoxBaudrate.FormattingEnabled = true;
+            comboBoxBaudrate.Location = new Point(139, 27);
+            comboBoxBaudrate.Name = "comboBoxBaudrate";
+            comboBoxBaudrate.Size = new Size(88, 23);
+            comboBoxBaudrate.TabIndex = 3;
             // 
             // buttonOpen
             // 
@@ -177,9 +177,9 @@
             Controls.Add(buttonClose);
             Controls.Add(buttonOpen);
             Controls.Add(label2);
-            Controls.Add(comboBoxBaud);
+            Controls.Add(comboBoxBaudrate);
             Controls.Add(label1);
-            Controls.Add(comboBoxPort);
+            Controls.Add(comboBoxSerialPortName);
             Name = "SerialForm";
             Text = "ModbusRTU Serial";
             ResumeLayout(false);
@@ -188,10 +188,10 @@
 
         #endregion
 
-        private ComboBox comboBoxPort;
+        private ComboBox comboBoxSerialPortName;
         private Label label1;
         private Label label2;
-        private ComboBox comboBoxBaud;
+        private ComboBox comboBoxBaudrate;
         private Button buttonOpen;
         private Button buttonClose;
         private TextBox textBoxReceive;

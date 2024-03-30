@@ -1,4 +1,6 @@
 using NModbus;
+using NModbus.Serial;
+using System.Diagnostics;
 using System.IO.Ports;
 
 namespace Example
@@ -7,7 +9,7 @@ namespace Example
     {
         private IModbusMaster master;
         private byte slaveId = 0x01;
-        private SerialPort port;
+        private SerialPort serialPort;
 
 
         private void SetStatus(string value) => BeginInvoke(() => { labelStatus.Text = value; });
@@ -25,6 +27,11 @@ namespace Example
 
                 SetStatus("Boost initialize");
             };
+
+            FormClosing += (s, e) =>
+            {
+                CloseSerialPort();
+            };
         }
 
         private void comboBoxPort_DropDown(object sender, EventArgs e)
@@ -34,24 +41,12 @@ namespace Example
 
         private void buttonOpen_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (comboBoxPort.SelectedItem == null || comboBoxBaud.SelectedItem == null)
-                {
-                    SetStatus("Please specify the COM Port and Baudrate first");
-                    return;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                labelStatus.Text = ex.Message;
-            }
+            OpenSerialPort();
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-
+            CloseSerialPort();
         }
 
         private void labelResponse_Click(object sender, EventArgs e)
@@ -66,7 +61,7 @@ namespace Example
 
         private void SearchComport()
         {
-            comboBoxPort.Items.Clear();
+            comboBoxSerialPortName.Items.Clear();
 
             var PortNames = SerialPort.GetPortNames();
             var status = "COM Port·j´M§¹²¦";
@@ -77,9 +72,9 @@ namespace Example
             }
             else
             {
-                comboBoxPort.Text = PortNames.Last();
-                comboBoxPort.Items.AddRange(PortNames);
-                comboBoxPort.SelectedItem = PortNames.Last();
+                comboBoxSerialPortName.Text = PortNames.Last();
+                comboBoxSerialPortName.Items.AddRange(PortNames);
+                comboBoxSerialPortName.SelectedItem = PortNames.Last();
             }
 
             SetStatus(status);
@@ -87,8 +82,45 @@ namespace Example
 
         private void Baudrate_Initialize()
         {
-            comboBoxBaud.DataSource = new List<int>() { 300, 1200, 2400, 9600, 19200, 38400, 115200 };
-            comboBoxBaud.SelectedIndex = 4;
+            comboBoxBaudrate.DataSource = new List<int>() { 300, 1200, 2400, 9600, 19200, 38400, 115200 };
+            comboBoxBaudrate.SelectedIndex = 4;
+        }
+
+        private void OpenSerialPort()
+        {
+            try
+            {
+
+                if (comboBoxSerialPortName.SelectedItem == null || comboBoxBaudrate.SelectedItem == null)
+                {
+                    return;
+                }
+
+                serialPort = new SerialPort();
+                serialPort.PortName = (string)comboBoxSerialPortName.SelectedItem;
+                serialPort.BaudRate = int.Parse((string)comboBoxBaudrate.SelectedItem);
+                serialPort.DataBits = 8;
+                serialPort.Parity = Parity.None;
+                serialPort.StopBits = StopBits.None;
+                serialPort.Open();
+
+                var factory = new ModbusFactory();
+                master = factory.CreateRtuMaster(new SerialPortAdapter(serialPort));
+
+                SetStatus("SerialPort is opened");
+            }
+            catch (Exception ex)
+            {
+                SetStatus(ex.ToString());
+            }
+        }
+
+        private void CloseSerialPort()
+        {
+            if (serialPort.IsOpen)
+            {
+                serialPort.Close();
+            }
         }
     }
 }
