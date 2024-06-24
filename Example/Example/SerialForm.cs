@@ -11,6 +11,9 @@ namespace Example
         private byte slaveId = 0x01;
         private SerialPort serialPort;
 
+        private int Register => int.TryParse(textBoxRegister.Text, out var register) ? Convert.ToInt32(textBoxRegister.Text) : 0;
+
+        private int Value => int.TryParse(textBoxValue.Text, out var register) ? Convert.ToInt32(textBoxValue.Text) : 0;
 
         private void SetStatus(string value) => BeginInvoke(() => { labelStatus.Text = value; });
 
@@ -49,9 +52,14 @@ namespace Example
             CloseSerialPort();
         }
 
-        private void labelResponse_Click(object sender, EventArgs e)
+        private void buttonResponse_Click(object sender, EventArgs e)
         {
+            if (serialPort is null || !serialPort.IsOpen)
+            {
+                return;
+            }
 
+            master.WriteSingleRegister(slaveId, (ushort)Register, (ushort)Value);
         }
 
         private void labelReceive_Click(object sender, EventArgs e)
