@@ -125,6 +125,11 @@ namespace Example
 
         private void CloseSerialPort()
         {
+            if (serialPort is null)
+            {
+                return;
+            }
+
             if (serialPort.IsOpen)
             {
                 serialPort.Close();
