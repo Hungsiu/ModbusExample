@@ -40,9 +40,11 @@
             textBoxResponse = new TextBox();
             labelStatus = new Label();
             labelReceive = new Label();
-            buttonResponse = new Button();
+            buttonSend = new Button();
             label5 = new Label();
             textBoxValue = new TextBox();
+            label6 = new Label();
+            textBoxAddress = new TextBox();
             SuspendLayout();
             // 
             // comboBoxSerialPortName
@@ -102,16 +104,16 @@
             // 
             // textBoxRegister
             // 
-            textBoxRegister.Location = new Point(12, 71);
+            textBoxRegister.Location = new Point(11, 132);
             textBoxRegister.Multiline = true;
             textBoxRegister.Name = "textBoxRegister";
-            textBoxRegister.Size = new Size(215, 52);
-            textBoxRegister.TabIndex = 6;
+            textBoxRegister.Size = new Size(215, 40);
+            textBoxRegister.TabIndex = 13;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(12, 53);
+            label3.Location = new Point(11, 114);
             label3.Name = "label3";
             label3.Size = new Size(53, 15);
             label3.TabIndex = 7;
@@ -120,7 +122,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(12, 199);
+            label4.Location = new Point(12, 248);
             label4.Name = "label4";
             label4.Size = new Size(51, 15);
             label4.TabIndex = 9;
@@ -128,46 +130,48 @@
             // 
             // textBoxResponse
             // 
-            textBoxResponse.Location = new Point(12, 217);
+            textBoxResponse.Location = new Point(12, 266);
             textBoxResponse.Multiline = true;
             textBoxResponse.Name = "textBoxResponse";
             textBoxResponse.ReadOnly = true;
-            textBoxResponse.Size = new Size(215, 106);
-            textBoxResponse.TabIndex = 8;
+            textBoxResponse.Size = new Size(215, 40);
+            textBoxResponse.TabIndex = 16;
             // 
             // labelStatus
             // 
             labelStatus.AutoSize = true;
-            labelStatus.Location = new Point(12, 362);
+            labelStatus.Dock = DockStyle.Bottom;
+            labelStatus.Location = new Point(0, 371);
             labelStatus.Name = "labelStatus";
             labelStatus.Size = new Size(41, 15);
             labelStatus.TabIndex = 10;
             labelStatus.Text = "Status";
+            labelStatus.Click += labelStatus_Click;
             // 
             // labelReceive
             // 
             labelReceive.AutoSize = true;
-            labelReceive.Location = new Point(233, 217);
+            labelReceive.Location = new Point(233, 266);
             labelReceive.Name = "labelReceive";
             labelReceive.Size = new Size(67, 15);
             labelReceive.TabIndex = 11;
             labelReceive.Text = "　　　　　";
             labelReceive.Click += labelReceive_Click;
             // 
-            // buttonResponse
+            // buttonSend
             // 
-            buttonResponse.Location = new Point(233, 71);
-            buttonResponse.Name = "buttonResponse";
-            buttonResponse.Size = new Size(75, 23);
-            buttonResponse.TabIndex = 12;
-            buttonResponse.Text = "Send";
-            buttonResponse.UseVisualStyleBackColor = true;
-            buttonResponse.Click += buttonResponse_Click;
+            buttonSend.Location = new Point(232, 205);
+            buttonSend.Name = "buttonSend";
+            buttonSend.Size = new Size(75, 23);
+            buttonSend.TabIndex = 15;
+            buttonSend.Text = "Send";
+            buttonSend.UseVisualStyleBackColor = true;
+            buttonSend.Click += buttonSend_Click;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(13, 126);
+            label5.Location = new Point(12, 187);
             label5.Name = "label5";
             label5.Size = new Size(39, 15);
             label5.TabIndex = 14;
@@ -175,20 +179,39 @@
             // 
             // textBoxValue
             // 
-            textBoxValue.Location = new Point(13, 144);
+            textBoxValue.Location = new Point(12, 205);
             textBoxValue.Multiline = true;
             textBoxValue.Name = "textBoxValue";
-            textBoxValue.Size = new Size(215, 52);
-            textBoxValue.TabIndex = 13;
+            textBoxValue.Size = new Size(215, 40);
+            textBoxValue.TabIndex = 14;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(12, 53);
+            label6.Name = "label6";
+            label6.Size = new Size(52, 15);
+            label6.TabIndex = 16;
+            label6.Text = "Address";
+            // 
+            // textBoxAddress
+            // 
+            textBoxAddress.Location = new Point(12, 71);
+            textBoxAddress.Multiline = true;
+            textBoxAddress.Name = "textBoxAddress";
+            textBoxAddress.Size = new Size(215, 40);
+            textBoxAddress.TabIndex = 6;
             // 
             // SerialForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(409, 386);
+            Controls.Add(label6);
+            Controls.Add(textBoxAddress);
             Controls.Add(label5);
             Controls.Add(textBoxValue);
-            Controls.Add(buttonResponse);
+            Controls.Add(buttonSend);
             Controls.Add(labelReceive);
             Controls.Add(labelStatus);
             Controls.Add(label4);
@@ -201,6 +224,8 @@
             Controls.Add(comboBoxBaudrate);
             Controls.Add(label1);
             Controls.Add(comboBoxSerialPortName);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
             Name = "SerialForm";
             Text = "ModbusRTU Serial";
             ResumeLayout(false);
@@ -221,8 +246,10 @@
         private TextBox textBoxResponse;
         private Label labelStatus;
         private Label labelReceive;
-        private Button buttonResponse;
+        private Button buttonSend;
         private Label label5;
         private TextBox textBoxValue;
+        private Label label6;
+        private TextBox textBoxAddress;
     }
 }

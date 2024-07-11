@@ -8,27 +8,29 @@ namespace Example
     public partial class SerialForm : Form
     {
         private IModbusMaster master;
-        private byte slaveId = 0x01;
         private SerialPort serialPort;
 
-        private int Register => int.TryParse(textBoxRegister.Text, out var register) ? Convert.ToInt32(textBoxRegister.Text) : 0;
+        private string portName => comboBoxSerialPortName.SelectedItem.ToString();
+        private int baudrate => int.Parse(comboBoxBaudrate.SelectedItem.ToString());
 
-        private int Value => int.TryParse(textBoxValue.Text, out var register) ? Convert.ToInt32(textBoxValue.Text) : 0;
+        private int SlaveID => int.TryParse(textBoxAddress.Text, out var address) ? address : 0;
 
-        private void SetStatus(string value) => BeginInvoke(() => { labelStatus.Text = value; });
+        private int Register => int.TryParse(textBoxRegister.Text, out var register) ? register : 0;
+
+        private int Value => int.TryParse(textBoxValue.Text, out var value) ? value : 0;
+
+        private void SetStatus(string value) => Invoke(() => { labelStatus.Text = value; });
 
         public SerialForm()
         {
             InitializeComponent();
-            MaximizeBox = false;
-
-
+            
             Load += (s, e) =>
             {
                 SearchComport();
                 Baudrate_Initialize();
 
-                SetStatus("Boost initialize");
+                SetStatus("開機初始" + Environment.NewLine + DateTime.Now);
             };
 
             FormClosing += (s, e) =>
@@ -44,6 +46,7 @@ namespace Example
 
         private void buttonOpen_Click(object sender, EventArgs e)
         {
+            Debug.WriteLine(portName + ":" + baudrate);
             OpenSerialPort();
         }
 
@@ -52,19 +55,34 @@ namespace Example
             CloseSerialPort();
         }
 
-        private void buttonResponse_Click(object sender, EventArgs e)
+        private void buttonSend_Click(object sender, EventArgs e)
         {
             if (serialPort is null || !serialPort.IsOpen)
             {
+                SetStatus("SerialPort尚未建立或連線，請檢查後再試一次");
                 return;
             }
 
-            master.WriteSingleRegister(slaveId, (ushort)Register, (ushort)Value);
+            try
+            {
+                SetStatus("準備將資料寫入暫存器...");
+
+                //Debug.WriteLine("暫存器:" + ((ushort)Register).ToString());
+                //Debug.WriteLine("數值:" + ((ushort)Value).ToString());
+
+                master.WriteSingleRegister((byte)SlaveID, (ushort)Register, (ushort)Value);
+
+                SetStatus("已將資料寫入暫存器");
+            }
+            catch (Exception ex)
+            {
+                SetStatus("將資料寫入暫存器時發生錯誤：" + Environment.NewLine + ex.Message);
+            }
         }
 
         private void labelReceive_Click(object sender, EventArgs e)
         {
-
+            var registerValue = master?.ReadInputRegisters((byte)SlaveID, (ushort)Register, (ushort)Value);
         }
 
         private void SearchComport()
@@ -91,7 +109,7 @@ namespace Example
         private void Baudrate_Initialize()
         {
             comboBoxBaudrate.DataSource = new List<int>() { 300, 1200, 2400, 9600, 19200, 38400, 115200 };
-            comboBoxBaudrate.SelectedIndex = 4;
+            comboBoxBaudrate.SelectedIndex = 6;
         }
 
         private void OpenSerialPort()
@@ -105,17 +123,21 @@ namespace Example
                 }
 
                 serialPort = new SerialPort();
-                serialPort.PortName = (string)comboBoxSerialPortName.SelectedItem;
-                serialPort.BaudRate = int.Parse((string)comboBoxBaudrate.SelectedItem);
-                serialPort.DataBits = 8;
-                serialPort.Parity = Parity.None;
-                serialPort.StopBits = StopBits.None;
+                serialPort.PortName = portName;
+                serialPort.BaudRate = baudrate;
                 serialPort.Open();
+
+                //serialPort.DataReceived += (s, e) =>
+                //{
+                //    SerialPort sp = s as SerialPort;
+                //    var response = sp.ReadLine();
+                //    Debug.WriteLine("From SerialPort" + response);
+                //};
 
                 var factory = new ModbusFactory();
                 master = factory.CreateRtuMaster(new SerialPortAdapter(serialPort));
 
-                SetStatus("SerialPort is opened");
+                SetStatus("SerialPort已開啟");
             }
             catch (Exception ex)
             {
@@ -133,7 +155,15 @@ namespace Example
             if (serialPort.IsOpen)
             {
                 serialPort.Close();
+                master.Dispose();
             }
+        }
+
+        private void labelStatus_Click(object sender, EventArgs e)
+        {
+            var label = sender as Label;
+
+            Clipboard.SetText(label.Text);
         }
     }
 }
