@@ -141,11 +141,11 @@
             // 
             labelStatus.AutoSize = true;
             labelStatus.Dock = DockStyle.Bottom;
-            labelStatus.Location = new Point(0, 371);
+            labelStatus.Location = new Point(0, 356);
             labelStatus.Name = "labelStatus";
-            labelStatus.Size = new Size(41, 15);
+            labelStatus.Size = new Size(56, 30);
             labelStatus.TabIndex = 10;
-            labelStatus.Text = "Status";
+            labelStatus.Text = "Status\r\nInitiallize";
             labelStatus.Click += labelStatus_Click;
             // 
             // labelReceive

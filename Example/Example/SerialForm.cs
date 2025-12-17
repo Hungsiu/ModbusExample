@@ -24,7 +24,8 @@ namespace Example
         public SerialForm()
         {
             InitializeComponent();
-            
+            MaximizeBox = false;
+
             Load += (s, e) =>
             {
                 SearchComport();
@@ -116,7 +117,6 @@ namespace Example
         {
             try
             {
-
                 if (comboBoxSerialPortName.SelectedItem == null || comboBoxBaudrate.SelectedItem == null)
                 {
                     return;
@@ -161,9 +161,10 @@ namespace Example
 
         private void labelStatus_Click(object sender, EventArgs e)
         {
-            var label = sender as Label;
-
-            Clipboard.SetText(label.Text);
+            if (sender is Label label)
+            {
+                Clipboard.SetText(label.Text);
+            }
         }
     }
 }
